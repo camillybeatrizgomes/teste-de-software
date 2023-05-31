@@ -6,11 +6,20 @@ import java.util.Date;
 import br.edu.ifpe.jaboatao.ts.entidades.Carro;
 import br.edu.ifpe.jaboatao.ts.entidades.Cliente;
 import br.edu.ifpe.jaboatao.ts.entidades.Locacao;
+import br.edu.ifpe.jaboatao.ts.exceptions.LocacaoException;
 import br.edu.ifpe.jaboatao.ts.utils.ManipulandoDatas;
 
 public class LocacaoService {
 
-	public Locacao alugarCarro(Cliente cliente, Carro carro) {
+	public Locacao alugarCarro(Cliente cliente, Carro carro) throws LocacaoException {
+		if (carro == null) {
+			throw new LocacaoException("Carro nulo.");
+		}
+		
+		if(carro.getEstoque().equals(0)) {
+			throw new LocacaoException("Estoque vazio.");
+		}
+		
 		Locacao locacao = new Locacao();
 		locacao.setCarro(carro);
 		locacao.setCliente(cliente);

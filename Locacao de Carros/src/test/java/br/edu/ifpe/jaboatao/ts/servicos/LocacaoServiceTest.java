@@ -3,17 +3,19 @@ package br.edu.ifpe.jaboatao.ts.servicos;
 import java.util.Date;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import br.edu.ifpe.jaboatao.ts.entidades.Carro;
 import br.edu.ifpe.jaboatao.ts.entidades.Cliente;
 import br.edu.ifpe.jaboatao.ts.entidades.Locacao;
+import br.edu.ifpe.jaboatao.ts.exceptions.LocacaoException;
 import br.edu.ifpe.jaboatao.ts.utils.ManipulandoDatas;
 
 public class LocacaoServiceTest {
 	
 	@Test
-	public void primeiroTeste() {
+	public void primeiroTeste() throws LocacaoException {
 		//System.out.println("Funcionando.");
 		//Cenário
 		LocacaoService service = new LocacaoService();
@@ -31,7 +33,70 @@ public class LocacaoServiceTest {
 		
 	}
 	
+	@Test
+	@DisplayName("Exception - Estoque vazio - Modo Try/catch")
+	public void exception01() {
+		// Cenário
+		LocacaoService service = new LocacaoService();
+		Cliente cliente = new Cliente("Cliente 01");
+		Carro carro = new Carro("modelo", 2023, 0, 100.00);
+		
+		// Ação 
+		try {
+			Locacao locacao = service.alugarCarro(cliente, carro);
+			Assertions.fail("Deveria ter ocorrido uma exceção, mas não ocorreu.");
+		} catch (LocacaoException e) {
+			// Verificação
+			Assertions.assertEquals("Estoque vazio.", e.getMessage());
+		}
+	}
 	
+	@Test
+	@DisplayName("Exception - Estoque vazio - Modo assertThrows")
+	public void exception02() {
+		// Cenário
+		LocacaoService service = new LocacaoService();
+		Cliente cliente = new Cliente("Cliente 01");
+		Carro carro = new Carro("modelo", 2023, 0, 100.00);
+		
+		// Ação 
+		LocacaoException e = Assertions.assertThrows(LocacaoException.class, () -> {
+			service.alugarCarro(cliente, carro);
+		}, "Deveria ter ocorrido uma exceção, mas não ocorreu.");
+		// Verificação
+		Assertions.assertEquals("Estoque vazio.", e.getMessage());
+	}
 	
+	@Test
+	@DisplayName("Exception - Carro nulo - Modo Try/catch")
+	public void exception03() {
+		// Cenário
+		LocacaoService service = new LocacaoService();
+		Cliente cliente = new Cliente("Cliente 01");
+		Carro carro = null;
+		
+		// Ação 
+		try {
+			Locacao locacao = service.alugarCarro(cliente, carro);
+			Assertions.fail("Deveria ter ocorrido uma exceção, mas não ocorreu.");
+		} catch (LocacaoException e) {
+			Assertions.assertEquals("Carro nulo.", e.getMessage());
+		}
+	}
 	
+	@Test
+	@DisplayName("Exception - Carro nulo - Modo assertThrows")
+	public void exception04() {
+		// Cenário
+		LocacaoService service = new LocacaoService();
+		Cliente cliente = new Cliente("Cliente 01");
+		Carro carro = null;
+				
+		// Ação 
+		LocacaoException e = Assertions.assertThrows(LocacaoException.class, () -> {
+			service.alugarCarro(cliente, null);
+		}, "Deveria ter ocorrido uma exceção, mas não ocorreu.");
+		// Verificação
+		Assertions.assertEquals("Carro nulo.", e.getMessage());
+	}
 }
