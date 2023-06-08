@@ -3,6 +3,7 @@ package br.edu.ifpe.jaboatao.ts.servicos;
 import java.util.Date;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +14,17 @@ import br.edu.ifpe.jaboatao.ts.exceptions.LocacaoException;
 import br.edu.ifpe.jaboatao.ts.utils.ManipulandoDatas;
 
 public class LocacaoServiceTest {
+	LocacaoService service;
+	
+	@BeforeEach
+	public void inicio() {
+		service = new LocacaoService();
+	}
 	
 	@Test
 	public void primeiroTeste() throws LocacaoException {
 		//System.out.println("Funcionando.");
 		//Cenário
-		LocacaoService service = new LocacaoService();
 		Cliente cliente = new Cliente("Cliente 01");
 		Carro carro = new Carro("modelo", 2023, 1, 100.00);
 		
@@ -37,7 +43,6 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Estoque vazio - Modo Try/catch")
 	public void exception01() {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Cliente cliente = new Cliente("Cliente 01");
 		Carro carro = new Carro("modelo", 2023, 0, 100.00);
 		
@@ -55,7 +60,6 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Estoque vazio - Modo assertThrows")
 	public void exception02() {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Cliente cliente = new Cliente("Cliente 01");
 		Carro carro = new Carro("modelo", 2023, 0, 100.00);
 		
@@ -71,7 +75,6 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Carro nulo - Modo Try/catch")
 	public void exception03() {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Cliente cliente = new Cliente("Cliente 01");
 		Carro carro = null;
 		
@@ -88,7 +91,6 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Carro nulo - Modo assertThrows")
 	public void exception04() {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Cliente cliente = new Cliente("Cliente 01");
 		Carro carro = null;
 				
