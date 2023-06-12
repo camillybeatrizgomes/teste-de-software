@@ -1,11 +1,12 @@
 package br.edu.ifpe.jaboatao.ts.entidades;
 
 import java.util.Date;
+import java.util.List;
 
 public class Locacao {
 
 	private Cliente cliente;
-	private Carro carro;
+	private List<Carro> carros;
 	private Date dataLocacao;
 	private Date dataRetorno;
 	private Double valorLocacao;
@@ -36,13 +37,11 @@ public class Locacao {
 	public void setValorLocacao(Double valor) {
 		this.valorLocacao = valor;
 	}
-
-	public Carro getCarro() {
-		return carro;
+	public List<Carro> getCarros() {
+		return carros;
 	}
-
-	public void setCarro(Carro carro) {
-		this.carro = carro;
+	public void setCarros(List<Carro> carros) {
+		this.carros = carros;
 	}
 
 }
