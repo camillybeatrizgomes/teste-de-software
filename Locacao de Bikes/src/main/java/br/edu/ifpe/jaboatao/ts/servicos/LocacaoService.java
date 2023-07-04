@@ -20,6 +20,7 @@ public class LocacaoService {
 		if(bicicletas == null || bicicletas.isEmpty()) {
 			throw new BikeException ("Bicicleta nula");
 		}
+		
 		for (Bicicleta bicicleta : bicicletas) {
 		if(bicicleta.getEstoque().equals(0)) {
 			throw new BikeException ("Estoque vazio");
@@ -34,31 +35,33 @@ public class LocacaoService {
 		/*for (Bicicleta bicicleta : bicicletas) {
 			valorTotal += bicicleta.getValor();
 		}*/
+		
+		// Implementando descontos 
 		for (int i = 0; i < bicicletas.size(); i++) {
-			double varValorTotal = 0;
+			double valorAtual = 0;
 			Bicicleta bicicleta = bicicletas.get(i);
-			varValorTotal = bicicleta.getValor();
-
-		if(i == 1) {
-			varValorTotal = varValorTotal * 0.90;
+			valorAtual = bicicleta.getValor();
+			
+			if(i == 1) {
+				valorAtual = valorAtual * 0.90;
+			}
+			if(i == 2) {
+				valorAtual = valorAtual * 0.80;
+			}
+			if(i == 3) {
+				valorAtual = valorAtual * 0.70;
+			}
+			if(i >= 4) {
+				valorAtual = valorAtual * 0.50;
+			}
+			valorTotal = valorTotal + valorAtual;
 		}
-		if(i == 2) {
-			varValorTotal = varValorTotal * 0.80;
-		}
-		if(i == 3) {
-			varValorTotal = varValorTotal * 0.70;
-		}
-		if(i >= 4) {
-			varValorTotal = varValorTotal * 0.50;
-		}
-			valorTotal = valorTotal + varValorTotal;
-		}
+		
 		locacao.setValorLocacao(valorTotal);
 		
 		//Definir a entrega para 3 dias depois.
 		Date dataEntrega = ManipularDatas.novaDataComDiferencaDeDias(3);
 		locacao.setDataRetorno(dataEntrega);
-
 		
 		//Salvando a locacao...	
 		//O método salvar() será implementado com o avançar do curso.
