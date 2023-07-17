@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import br.edu.ifpe.jaboatao.ts.builder.BicicletaBuilder;
+import br.edu.ifpe.jaboatao.ts.builder.ClienteBuilder;
 import br.edu.ifpe.jaboatao.ts.entidades.Bicicleta;
 import br.edu.ifpe.jaboatao.ts.entidades.Cliente;
 import br.edu.ifpe.jaboatao.ts.entidades.Locacao;
@@ -35,8 +37,8 @@ public class LocacaoServiceTest {
 	public void exception01() {
 		// Cenário
 
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 0, 20.0));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().semEstoque().agora());
 		
 		try {
 			// Ação
@@ -53,9 +55,8 @@ public class LocacaoServiceTest {
 	@Order(1)
 	public void exception02() throws Exception {
 		// Cenário
-
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 0, 20.0));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().semEstoque().agora());
 		
 		// Ação
 		Exception e = Assertions.assertThrows(Exception.class, () -> {
@@ -70,8 +71,8 @@ public class LocacaoServiceTest {
 	public void exception03() {
 		// Cenário
 
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = null;
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.bicicletaNula().agora());
 		
 		// Ação
 		try {
@@ -88,8 +89,8 @@ public class LocacaoServiceTest {
 	public void exception04() {
 		// Cenário
 
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = null;
+		Cliente cliente = ClienteBuilder.umCliente().outroNome("Cliente 02").agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.bicicletaNula().agora());
 		
 		// Ação
 		Exception e = Assertions.assertThrows(Exception.class,() -> {
@@ -103,8 +104,8 @@ public class LocacaoServiceTest {
 	public void exception05() {
 		// Cenário
 
-		Cliente cliente = new Cliente("");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 20.0));
+		Cliente cliente = ClienteBuilder.clienteVazio().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora());
 		
 		// Ação
 		try {
@@ -121,8 +122,8 @@ public class LocacaoServiceTest {
 	public void exception06() {
 		// Cenário
 
-		Cliente cliente = new Cliente("");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 20.0));
+		Cliente cliente = ClienteBuilder.umCliente().outroNome("").agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().valorLocacao(20.0).agora());
 		
 		// Ação 
 		Exception e = Assertions.assertThrows(Exception.class, () -> {
@@ -137,12 +138,12 @@ public class LocacaoServiceTest {
 	@DisplayName("Valor total da locação de 5 bicicletas")
 	@Disabled
 	public void valorLocacao() {
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0),
-													new Bicicleta("Bike 03", 1, 50.0),
-													new Bicicleta("Bike 04", 1, 50.0),
-													new Bicicleta("Bike 05", 1, 50.0));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora());
 		
 		// Ação
 		try {
@@ -158,10 +159,10 @@ public class LocacaoServiceTest {
 	@Test
 	@DisplayName("Bicicletas sem estoque")
 	public void bicicletasSemEstoque() throws BikeException {
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0),
-													new Bicicleta("Bike 03", 0, 50.0));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().semEstoque().agora());
 		
 		// Ação
 		Exception e = Assertions.assertThrows(Exception.class, () -> {
@@ -175,9 +176,9 @@ public class LocacaoServiceTest {
 	@Test
 	@DisplayName("10% de desconto na 2º bicicleta")
 	public void desconto01() throws BikeException {
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0)); 
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora()); 
 		
 		// Ação
 		locacao = service.alugarBicicleta(cliente, bicicletas);
@@ -190,9 +191,9 @@ public class LocacaoServiceTest {
 	@DisplayName("20% de desconto na 3º bicicleta")
 	public void desconto02() throws BikeException {
 		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0),
-													new Bicicleta("Bike 03", 1, 50.0));
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora());
 		
 		// Ação 
 		locacao = service.alugarBicicleta(cliente, bicicletas);
@@ -205,10 +206,10 @@ public class LocacaoServiceTest {
 	@DisplayName("30% de desconto na 4º bicicleta")
 	public void desconto03() throws BikeException {
 		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0),
-													new Bicicleta("Bike 03", 1, 50.0),
-													new Bicicleta("Bike 04", 1, 50.0));
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora());
 		
 		// Ação
 		locacao = service.alugarBicicleta(cliente, bicicletas);
@@ -221,11 +222,11 @@ public class LocacaoServiceTest {
 	@DisplayName("50% de desconto na 5º bicicleta ou mais")
 	public void desconto04() throws BikeException {
 		Cliente cliente = new Cliente("Cliente 01");
-		List<Bicicleta> bicicletas = Arrays.asList(new Bicicleta("Bike 01", 1, 50.0),
-													new Bicicleta("Bike 02", 1, 50.0),
-													new Bicicleta("Bike 03", 1, 50.0),
-													new Bicicleta("Bike 04", 1, 50.0),
-													new Bicicleta("Bike 05", 1, 50.0));
+		List<Bicicleta> bicicletas = Arrays.asList(BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora(),
+													BicicletaBuilder.umaBicicleta().agora());
 		
 		// Ação 
 		locacao = service.alugarBicicleta(cliente, bicicletas);

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import br.edu.ifpe.jaboatao.ts.builder.CarroBuilder;
+import br.edu.ifpe.jaboatao.ts.builder.ClienteBuilder;
 import br.edu.ifpe.jaboatao.ts.entidades.Carro;
 import br.edu.ifpe.jaboatao.ts.entidades.Cliente;
 import br.edu.ifpe.jaboatao.ts.entidades.Locacao;
@@ -27,8 +29,8 @@ public class LocacaoServiceTest {
 	public void primeiroTeste() throws LocacaoException {
 		//System.out.println("Funcionando.");
 		//Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Carro> carros = Arrays.asList(new Carro("modelo", 2023, 1, 100.00));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Carro> carros = Arrays.asList(CarroBuilder.umCarro().valorLocacao(100).agora());
 		
 		//Ação
 		Locacao locacao = service.alugarCarro(cliente, carros);
@@ -45,8 +47,8 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Estoque vazio - Modo Try/catch")
 	public void exception01() {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Carro> carros = Arrays.asList(new Carro("modelo", 2023, 0, 100.00));
+		Cliente cliente = ClienteBuilder.umCliente().outroNome("Cliente 02").agora();
+		List<Carro> carros = Arrays.asList(CarroBuilder.umCarro().semEstoque().valorLocacao(100.00).agora());
 		
 		// Ação 
 		try {
@@ -62,8 +64,8 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Estoque vazio - Modo assertThrows")
 	public void exception02() {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Carro> carros = Arrays.asList(new Carro("modelo", 2023, 0, 100.00));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Carro> carros = Arrays.asList(CarroBuilder.umCarro().semEstoque().valorLocacao(100.00).agora());
 		
 		// Ação 
 		LocacaoException e = Assertions.assertThrows(LocacaoException.class, () -> {
@@ -77,8 +79,8 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Carro nulo - Modo Try/catch")
 	public void exception03() {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		Carro carro = null;
+		Cliente cliente = ClienteBuilder.umCliente().outroNome("Cliente 03").agora();
+		Carro carro = CarroBuilder.carroNulo().agora();
 		
 		// Ação 
 		try {
@@ -93,8 +95,8 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Carro nulo - Modo assertThrows")
 	public void exception04() {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		Carro carro = null;
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		Carro carro = CarroBuilder.carroNulo().agora();
 				
 		// Ação 
 		LocacaoException e = Assertions.assertThrows(LocacaoException.class, () -> {
@@ -108,9 +110,9 @@ public class LocacaoServiceTest {
 	@DisplayName("Exception - Estoque total")
 	public void exception05() {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
-		List<Carro> carros = Arrays.asList(new Carro("modelo 01", 2020, 1, 60.00),
-										   new Carro("modelo 02", 2021, 1, 40.00));
+		Cliente cliente = ClienteBuilder.umCliente().agora();
+		List<Carro> carros = Arrays.asList(CarroBuilder.umCarro().valorLocacao(60).agora(),
+											CarroBuilder.umCarro().valorLocacao(40).agora());
 		Locacao locacao = new Locacao();
 		// Ação 
 		try {
@@ -127,8 +129,8 @@ public class LocacaoServiceTest {
 		// Cenário
 		Cliente cliente = new Cliente("Cliente 01");
 		List<Carro> carros = Arrays.asList(
-									new Carro("Modelo 01", 2020, 1, 100.00),
-									new Carro("Modelo 02", 2021, 1, 90.00));
+									CarroBuilder.umCarro().valorLocacao(100.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora());
 		
 		// Ação
 		Locacao locacao = service.alugarCarro(cliente, carros);
@@ -141,11 +143,11 @@ public class LocacaoServiceTest {
 	@DisplayName("Desconto de 15% no 3º Carro")
 	public void desconto02() throws LocacaoException {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
+		Cliente cliente = ClienteBuilder.umCliente().agora();
 		List<Carro> carros = Arrays.asList(
-									new Carro("Modelo 01", 2020, 1, 100.00),
-									new Carro("Modelo 02", 2021, 1, 90.00),
-									new Carro("Modelo 03", 2022, 1, 90.00));
+										CarroBuilder.umCarro().valorLocacao(100.00).agora(),
+										CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+										CarroBuilder.umCarro().valorLocacao(90.00).agora());
 		
 		// Ação
 		Locacao locacao = service.alugarCarro(cliente, carros);
@@ -158,12 +160,12 @@ public class LocacaoServiceTest {
 	@DisplayName("Desconto de 20% no 4º Carro")
 	public void desconto03() throws LocacaoException {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
+		Cliente cliente = ClienteBuilder.umCliente().agora();
 		List<Carro> carros = Arrays.asList(
-									new Carro("Modelo 01", 2020, 1, 100.00),
-									new Carro("Modelo 02", 2021, 1, 90.00),
-									new Carro("Modelo 03", 2022, 1, 90.00),
-									new Carro("Modelo 04", 2023, 1, 90.00));
+									CarroBuilder.umCarro().valorLocacao(100.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora());
 		
 		// Ação
 		Locacao locacao = service.alugarCarro(cliente, carros);
@@ -176,14 +178,14 @@ public class LocacaoServiceTest {
 	@DisplayName("Desconto de 25% no 5º Carro ou mais")
 	public void desconto04() throws LocacaoException {
 		// Cenário
-		Cliente cliente = new Cliente("Cliente 01");
+		Cliente cliente = ClienteBuilder.umCliente().agora();
 		List<Carro> carros = Arrays.asList(
-									new Carro("Modelo 01", 2020, 1, 100.00),
-									new Carro("Modelo 02", 2021, 1, 90.00),
-									new Carro("Modelo 03", 2022, 1, 90.00),
-									new Carro("Modelo 04", 2023, 1, 90.00),
-									new Carro("Modelo 05", 2024, 1, 90.00),
-									new Carro("Modelo 06", 2025, 1, 90.00));
+									CarroBuilder.umCarro().valorLocacao(100.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora(),
+									CarroBuilder.umCarro().valorLocacao(90.00).agora());
 		
 		// Ação
 		Locacao locacao = service.alugarCarro(cliente, carros);
