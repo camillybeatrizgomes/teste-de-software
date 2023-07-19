@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import br.ifpe.jaboatao.ts.builder.UsuarioBuilder;
 import br.ifpe.jaboatao.ts.entidades.Filme;
 import br.ifpe.jaboatao.ts.entidades.Locacao;
 import br.ifpe.jaboatao.ts.entidades.Usuario;
@@ -21,7 +22,7 @@ public class LocacaoServiceTest {
 
 		// Cenário
 		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuário 01");
+		Usuario usuario = UsuarioBuilder.umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 01", 10, 11.0));
 
 		// Ação
